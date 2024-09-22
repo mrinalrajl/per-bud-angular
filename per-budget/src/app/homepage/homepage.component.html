@@ -1,0 +1,146 @@
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+<div class="container">
+  <div class="page-area">
+      <!-- This is an A11y Change -->
+      <form class="form-inline mr-auto" role="search">
+          <!-- This is an A11y Change -->
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button type="button" class="btn btn-secondary btn-sm">Search</button>
+      </form>
+      <div class="center" style="height:500px">
+          <p>
+            <figure id="myDoughnutChart"></figure>
+          </p>
+      </div>
+      <main id="main">
+      <pb-breadcrumbs></pb-breadcrumbs>
+      <div class="text-box" role="article">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+            <pb-article>
+              <h1>Stay on track</h1>
+              <p>
+                Do you know where you are spending your money?
+                If you really stop to track it down, you would get surprised!
+                Proper budget management depends on real data... and this app will help you with that!
+              </p>
+            </pb-article>
+              <!-- This is an SEO Change -->
+              <div class="center">
+                <img src="/assets/sharon-mccutcheon--8a5eJ1-mmQ-unsplash.jpg" alt="A person counting cash" width="200px" height="120px" >
+            </div>
+          </section>
+      </div>
+
+      <div class="text-box">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+            <pb-article>
+              <h1>Alerts</h1>
+              <p>
+                  What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
+              </p>
+            </pb-article>
+            <div class="center">
+              <img src="/assets/jamie-street-33oxtOMk6Ac-unsplash.jpg" alt="Mobile notifications" width="200px" height="150px">
+          </div>
+          </section>
+      </div>
+
+      <div class="text-box">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+            <pb-article>
+              <h1>Results</h1>
+              <p>
+                  People who stick to a financial plan, budgeting every expense, get out of debt faster!
+                  Also, they to live happier lives... since they expend without guilt or fear...
+                  because they know it is all good and accounted for.
+              </p>
+            </pb-article>
+          </section>
+      </div>
+
+      <div class="text-box">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+            <article>
+              <h1>Chart</h1>
+              <p>
+                  <canvas id="myChart" width="300" height="300"></canvas>
+              </p>
+            </article>
+          </section>
+      </div>
+
+      <div class="text-box">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+              <!-- This is a Semantic HTML Change -->
+              <pb-article>
+                  <h1>Why is Budgeting so important?</h1>
+                  <p>
+                      "Budgeting is simply balancing your expenses with your income. If they don't balance and you spend
+                      more than you make, you will have a problem. Many people don't realize that they spend more
+                      than they earn and slowly sink deeper into debt every year."
+                  </p>
+                  <a href="https://www.mymoneycoach.ca/budgeting/what-is-a-budget-planning-forecasting" target="_blank" rel="external nofollow" rel="noopener" rel=noreferrer>Read more</a>
+              </pb-article>
+          </section>
+      </div>
+
+      <div class="text-box">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+              <!-- This is a Semantic HTML Change -->
+              <pb-article>
+                  <h1>6 Reasons why you need a budget!</h1>
+                  <p>
+                    If you're like most folks, you probably aren't following expert financial advice by crafting and following a budget.
+                    A budget is simply a spending plan that takes into account both current and future income and expenses.
+                    Having a budget keeps your spending in check and makes sure your savings are on track for the future.
+                  </p>
+                  <!-- This is an SEO Change -->
+                  <a href="https://www.investopedia.com/financial-edge/1109/6-reasons-why-you-need-a-budget.aspx" target="_blank" rel="external nofollow" rel="noopener" rel=noreferrer>Read more</a>
+              </pb-article>
+          </section>
+      </div>
+
+      <div class="text-box">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+              <!-- This is a Semantic HTML Change -->
+              <pb-article>
+                  <!-- This is a Semantic HTML Change -->
+                  <h1>You need a budget!</h1>
+                  <p>
+                      Read some success stories that were only possible because they had a budget.
+                  </p>
+                  <!-- This is an SEO Change -->
+                  <a href="https://www.youneedabudget.com/category/budgeting-success-stories/" target="_blank" rel="external nofollow" rel="noopener" rel=noreferrer>Read more</a>
+              </pb-article>
+          </section>
+      </div>
+
+      <div class="text-box">
+          <!-- This is a Semantic HTML Change -->
+          <section>
+              <!-- This is a Semantic HTML Change -->
+              <pb-article>
+                  <!-- This is a Semantic HTML Change -->
+                  <h1>They did it! So can you!</h1>
+                  <p>
+                      Read 4 real life budget success stories. Read more to find out how important it is to maintain a personal budget.
+                  </p>
+                  <!-- This is an SEO Change -->
+                  <a href="https://blog.mint.com/goals/they-did-it-and-so-can-you-4-real-life-budget-success-stories-0114/" target="_blank" rel="external nofollow" rel="noopener" rel=noreferrer>Read more</a>
+              </pb-article>
+          </section>
+      </div>
+      </main>
+  </div>
+
+</div>

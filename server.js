@@ -22,5 +22,5 @@ app.get('/budget-data', (req, res) => { // Change the route to /budget-data
 });
 
 app.listen(port, () => {
-console.log(`Example app listening at http://localhost:${port}`);
+console.log(`App listening at http://localhost:${port}`);
 });

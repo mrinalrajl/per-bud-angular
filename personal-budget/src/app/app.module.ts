@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +13,8 @@ import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { P404Component } from './p404/p404.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import { ContactComponent } from './contact/contact.component';
+import { DataService } from './data.service';
 
 @NgModule({
   declarations: [
@@ -24,15 +27,15 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
     AboutComponent,
     LoginComponent,
     P404Component,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    HttpClientModule,
+    AppRoutingModule
   ],
-  providers: [
-    provideClientHydration()
-  ],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

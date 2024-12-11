@@ -1,20 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'pb-article',
   templateUrl: './article.component.html',
-  styleUrl: './article.component.scss'
+  styleUrls: ['./article.component.scss']
 })
-export class ArticleComponent implements OnInit{
-  @Input() title = 'Title';
-  @Input() content = 'Content';
+export class ArticleComponent implements OnInit {
 
-  constructor() {}
+  // @Input() title = 'Title';
+  // @Input() content = 'Content';
+
+  constructor() { }
 
   ngOnInit(): void {
     
   }
-
-
-
 }

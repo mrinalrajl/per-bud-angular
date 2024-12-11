@@ -1,128 +1,156 @@
-import { Component, OnInit } from '@angular/core';
-import { Chart, ChartConfiguration } from 'chart.js';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Chart } from 'chart.js/auto';
 import * as d3 from 'd3';
 import { DataService } from '../data.service';
-
-interface BudgetItem {
-  title: string;
-  budget: number;
-  backgroundColor: string;
-}
 
 @Component({
   selector: 'pb-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.scss']
+  styleUrls: ['./homepage.component.scss'],
 })
-export class HomepageComponent implements OnInit {
-
-  private svg!: d3.Selection<SVGGElement, unknown, HTMLElement, any>;
-  private margin = 50;
-  private width = 400;
-  private height = 400;
-  // The radius of the pie chart is half the smallest side
-  private radius = Math.min(this.width, this.height) / 2 - this.margin;
-  private colors!: d3.ScaleOrdinal<string, string>;
-  public data: BudgetItem[] = [];
-
-  public dataSource: ChartConfiguration['data'] = {
-      datasets: [
-          {
-              data: [],
-              backgroundColor: []
-          }
-      ],
-      labels: []
+export class HomepageComponent implements OnInit, AfterViewInit {
+  public dataSource: {
+    datasets: {
+      data: any[];
+      backgroundColor: string[];
+    }[];
+    labels: string[];
+  } = {
+    datasets: [
+      {
+        data: [],
+        backgroundColor: ['#ffcd56', '#ff6384', '#36a2eb', '#fd6b19'],
+      },
+    ],
+    labels: [],
   };
 
-  public createSVG(): void {
-    this.svg = d3.select("figure#myDoughnutChart")
-    .append("svg")
-    .attr("width", this.width)
-    .attr("height", this.height)
-    .append("g")
-    .attr(
-      "transform",
-      "translate(" + this.width / 2 + "," + this.height / 2 + ")"
-    );
-  }
-
-  private createColors(): void {
-    this.colors = d3.scaleOrdinal<string>()
-      .domain(this.data.map(d => d.budget.toString()))
-      .range(["#c7d3ec", "#a5b8db", "#879cc4", "#677795", "#5a6782"]);
-  }
-
-  private drawChart(): void {
-    const pie = d3.pie<BudgetItem>().value(d => d.budget);
-  
-    this.svg
-      .selectAll('pieces')
-      .data(pie(this.data))
-      .enter()
-      .append('path')
-      .attr('d', (d: d3.PieArcDatum<BudgetItem>) => d3.arc<d3.PieArcDatum<BudgetItem>>()
-        .innerRadius(100)
-        .outerRadius(this.radius)(d))
-      .attr('fill', (d, i) => this.colors(i.toString()))
-      .attr("stroke", "#121926")
-      .style("stroke-width", "0.5px");
-  
-    const labelLocation = d3.arc<d3.PieArcDatum<BudgetItem>>()
-      .innerRadius(100)
-      .outerRadius(this.radius);
-  
-    this.svg
-      .selectAll('pieces')
-      .data(pie(this.data))
-      .enter()
-      .append('text')
-      .text(d => d.data.title)
-      .attr("transform", d => `translate(${labelLocation.centroid(d)})`)
-      .style("text-anchor", "middle")
-      .style("font-size", 12)
-      .style("fill", "black");
-  }
-
-  constructor(public dataService: DataService) { }
+  constructor(
+    private http: HttpClient,
+    private dataService: DataService
+  ) {}
 
   ngOnInit(): void {
-    this.dataService.getData().subscribe((budgetData: BudgetItem[]) => {
-      this.dataService.myBudget = budgetData;
-      this.updateDataSource(budgetData);
+    this.http.get('http://localhost:3000/budget').subscribe((res: any) => {
+      console.log(res);
+      for (var i = 0; i < res.myBudget.length; i++) {
+        this.dataSource.datasets[0].data[i] = res.myBudget[i].budget;
+        this.dataSource.labels[i] = res.myBudget[i].title;
+      }
       this.createChart();
-      this.data = budgetData;
-      this.createD3Chart();
-    });
-  }
-  
 
-  private createD3Chart(): void {
-    this.createSVG();
-    this.createColors();
-    this.drawChart();
-  }
-  private updateDataSource(budgetData: BudgetItem[]): void {
-    this.dataSource.datasets[0].data = budgetData.map(item => item.budget);
-    this.dataSource.labels = budgetData.map(item => item.title);
-    this.dataSource.datasets[0].backgroundColor = budgetData.map(item => item.backgroundColor);
-  }
-  
-  private createChart(): void {
-    const canvas = document.getElementById("myChart") as HTMLCanvasElement;
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        new Chart(ctx, {
-          type: 'pie',
-          data: this.dataSource
+      // Check if the budget data in the DataService is empty before making the call
+      if (this.dataService.isBudgetDataEmpty()) {
+        this.dataService.getBudgetData().subscribe((data: any) => {
+          // Create the 'budget-data' chart using D3 and set budget data
+          this.createSecondChart(data.myBudget);
+          this.dataService.setBudgetData(data.myBudget);
         });
       } else {
-        console.error('Failed to get drawing context');
+        // If budget data is already present, use it to create the chart
+        const existingData = this.dataService.getStoredBudgetData();
+        this.createSecondChart(existingData);
       }
-    } else {
-      console.error('Cannot find canvas element');
-    }
+    });
   }
 
+  ngAfterViewInit(): void {
+    
+  }
+
+  createChart() {
+    var ctx = document.getElementById('firstChart') as HTMLCanvasElement;
+    var existingChart = Chart.getChart(ctx);
+
+    if (existingChart) {
+      existingChart.destroy();
+    }
+
+    var myPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: this.dataSource,
+    });
+  }
+
+  createSecondChart(data: any[]) {
+    const budgetValues = data.map((d: any) => d.budget);
+    const width = 700;
+    const height = 500;
+    const radius = Math.min(width, height) / 2;
+
+    const svg = d3.select('#secondChart')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .append('g')
+      .attr('transform', `translate(${width / 2},${height / 2})`);
+
+    const color = d3.scaleOrdinal<string, string>()
+      .domain(data.map((d: any) => d.title))
+      .range(['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00']);
+
+    const pie = d3.pie<number>()
+      .sort(null)
+      .value((d, i) => budgetValues[i]);
+
+    const arc = d3.arc<any, d3.DefaultArcObject>()
+      .outerRadius(radius * 0.8)
+      .innerRadius(radius * 0.4);
+
+    const outerArc = d3.arc<any, d3.DefaultArcObject>()
+      .innerRadius(radius * 0.9)
+      .outerRadius(radius * 0.9);
+
+    const arcs = svg.selectAll('.arc')
+      .data(pie(data))
+      .enter()
+      .append('g')
+      .attr('class', 'arc');
+
+    arcs.append('path')
+      .attr('d', (d: any) => {
+        if (typeof d === 'object' && 'startAngle' in d && 'endAngle' in d) {
+          return arc(d);
+        }
+        return '';
+      })
+      .style('fill', (d: any) => color(d.data.title))
+      .attr('class', 'slice');
+
+    const text = svg.selectAll('.labels')
+      .data(pie(data))
+      .enter()
+      .append('text')
+      .attr('dy', '.35em')
+      .text(function (d: any) {
+        return d.data.title;
+      });
+
+    function midAngle(d: { startAngle: number; endAngle: number; }) {
+      return d.startAngle + (d.endAngle - d.startAngle) / 2;
+    }
+
+    text.transition().duration(1000)
+      .attr('transform', function (d: any) {
+        var pos = outerArc.centroid(d);
+        pos[0] = radius * 1.002 * (midAngle(d) < Math.PI ? 1 : -1);
+        return `translate(${pos[0]},${pos[1]})`;
+      })
+      .style('text-anchor', function (d: any) {
+        return midAngle(d) < Math.PI ? 'start' : 'end';
+      });
+
+    const polyline = svg.selectAll('.lines')
+      .data(pie(data))
+      .enter()
+      .append('polyline');
+
+    polyline.transition().duration(1000)
+      .attr('points', function (d: any) {
+        var pos = outerArc.centroid(d);
+        pos[0] = radius * 1 * (midAngle(d) < Math.PI ? 1 : -1);
+        return `${arc.centroid(d)},${outerArc.centroid(d)},${pos[0]},${pos[1]}`;
+      });
+  }
 }

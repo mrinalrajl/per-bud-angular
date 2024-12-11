@@ -1,12 +1,102 @@
-<main>
-    <div class="contact-card">
-        <h2>Raghava Ramaiahgari</h2>
-        <p>Local Phone: (123) 456-7890</p>
-        <p>International Phone: (866) 952-6090</p>
-        <p>Email: rraghava332@gmail.com</p>
-        <p>Open Hours: </p>
-        <p>Mon-Fri: 9am to 4pm</p>
-        <p>Weekends: 10am to 2pm </p>
-        <p>Address: 383 Main Street, Charlotte, NC</p>
-    </div>
-</main>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Card</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --text-color: #333;
+            --background-color: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .contact-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        .hours {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem;
+        }
+
+        address {
+            font-style: normal;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <article class="contact-card">
+            <h2>Mrinal</h2>
+            <section>
+                <h3>Contact Information</h3>
+                <ul>
+                    <li>International: <a href="tel:+1999999990">(866) 952-6090</a></li>
+                    <li>Email: <a href="mailto:abc@gmail.com">rraghava332@gmail.com</a></li>
+                </ul>
+            </section>
+            <section>
+                <h3>Open Hours</h3>
+                <div class="hours">
+                    <span>Mon-Fri:</span>
+                    <span>9am to 4pm</span>
+                    <span>Weekends:</span>
+                    <span>10am to 2pm</span>
+                </div>
+            </section>
+            <address>
+                383 Main Street, Charlotte, NC
+            </address>
+        </article>
+    </main>
+</body>
+</html>
